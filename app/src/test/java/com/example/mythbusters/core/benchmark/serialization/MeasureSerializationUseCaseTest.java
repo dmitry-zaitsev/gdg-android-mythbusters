@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
 
 import java.util.List;
 
@@ -15,7 +16,6 @@ import rx.observers.TestSubscriber;
 
 import static java.util.Arrays.asList;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doReturn;
@@ -24,10 +24,8 @@ import static org.mockito.Mockito.times;
 
 public class MeasureSerializationUseCaseTest {
 
-    private static final long SINGLE_MEASUREMENT_MS = 100L;
-
-    @Mock
-    Benchmark benchmark;
+    @Spy
+    Benchmark benchmark = new MockBenchmark();
     @Mock
     Serializer serializer;
     @Mock
@@ -35,15 +33,10 @@ public class MeasureSerializationUseCaseTest {
 
     final Object smallObject = new Object();
     final Object bigObject = new Object();
-    private InOrder inOrder;
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-
-        doReturn(SINGLE_MEASUREMENT_MS)
-                .when(benchmark)
-                .measureOperation(any(Runnable.class), anyLong());
 
         doReturn(new byte[10])
                 .when(serializer)
@@ -56,8 +49,6 @@ public class MeasureSerializationUseCaseTest {
         doReturn(bigObject)
                 .when(objectFactory)
                 .createBigObject();
-
-        inOrder = inOrder(benchmark, serializer, objectFactory);
     }
 
     @Test
@@ -74,25 +65,37 @@ public class MeasureSerializationUseCaseTest {
                 .subscribe();
 
         // Then
-        inOrder.verify(objectFactory).createSmallObject();
-        verifyObjectSerialized(smallObject, 10);
-        verifyObjectSerialized(smallObject, 100);
-        verifyObjectSerialized(smallObject, 1000);
-        verifyObjectSerialized(smallObject, 10000);
-
-        inOrder.verify(objectFactory).createBigObject();
-        verifyObjectSerialized(bigObject, 10);
-        verifyObjectSerialized(bigObject, 100);
-        verifyObjectSerialized(bigObject, 1000);
-        verifyObjectSerialized(bigObject, 10000);
+        verifySmallObjectBenchmarked();
+        verifyBigObjectBenchmarked();
     }
 
-    private void verifyObjectSerialized(Object object, int iterations) {
+    private void verifySmallObjectBenchmarked() {
+        InOrder inOrder = inOrder(benchmark, serializer, objectFactory);
+
+        inOrder.verify(objectFactory).createSmallObject();
+        verifyObjectSerialized(inOrder, smallObject, 10);
+        verifyObjectSerialized(inOrder, smallObject, 100);
+        verifyObjectSerialized(inOrder, smallObject, 1000);
+        verifyObjectSerialized(inOrder, smallObject, 10000);
+    }
+
+    private void verifyBigObjectBenchmarked() {
+        InOrder inOrder = inOrder(benchmark, serializer, objectFactory);
+        inOrder.verify(objectFactory).createBigObject();
+        verifyObjectSerialized(inOrder, bigObject, 10);
+        verifyObjectSerialized(inOrder, bigObject, 100);
+        verifyObjectSerialized(inOrder, bigObject, 1000);
+        verifyObjectSerialized(inOrder, bigObject, 10000);
+    }
+
+    private void verifyObjectSerialized(InOrder inOrder, Object object, long iterations) {
         inOrder.verify(benchmark).measureOperation(
                 any(Runnable.class),
-                iterations
+                eq(iterations)
         );
-        inOrder.verify(serializer, times(iterations)).serialize(eq(object));
+
+        inOrder.verify(serializer, times((int) iterations))
+                .serialize(eq(object));
     }
 
     @Test
@@ -133,7 +136,7 @@ public class MeasureSerializationUseCaseTest {
     private MeasurementResult buildMeasurementResult(int iterations) {
         return new MeasurementResult(
                 iterations,
-                iterations * SINGLE_MEASUREMENT_MS
+                MockBenchmark.MEASUREMENT_MS
         );
     }
 
