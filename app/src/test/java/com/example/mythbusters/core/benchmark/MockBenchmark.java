@@ -1,6 +1,4 @@
-package com.example.mythbusters.core.benchmark.serialization;
-
-import com.example.mythbusters.core.benchmark.Benchmark;
+package com.example.mythbusters.core.benchmark;
 
 /**
  * Benchmark for Unit tests which just executes operation specified amount of times.

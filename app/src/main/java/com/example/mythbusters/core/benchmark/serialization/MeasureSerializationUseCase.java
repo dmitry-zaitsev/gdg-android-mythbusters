@@ -111,18 +111,18 @@ public class MeasureSerializationUseCase {
         /**
          * Measurement results of serialization of small objects
          */
-        public final List<MeasurementResult> smallObjectSerializationMs;
+        public final List<MeasurementResult> smallObjectSerialization;
 
         /**
          * Measurement results of serialization of big objects
          */
-        public final List<MeasurementResult> bigObjectSerializationMs;
+        public final List<MeasurementResult> bigObjectSerialization;
 
-        public Result(List<MeasurementResult> smallObjectSerializationMs,
-                      List<MeasurementResult> bigObjectSerializationMs) {
+        public Result(List<MeasurementResult> smallObjectSerialization,
+                      List<MeasurementResult> bigObjectSerialization) {
 
-            this.smallObjectSerializationMs = unmodifiableList(smallObjectSerializationMs);
-            this.bigObjectSerializationMs = unmodifiableList(bigObjectSerializationMs);
+            this.smallObjectSerialization = unmodifiableList(smallObjectSerialization);
+            this.bigObjectSerialization = unmodifiableList(bigObjectSerialization);
         }
 
         @Override
@@ -132,14 +132,14 @@ public class MeasureSerializationUseCase {
 
             Result result = (Result) o;
 
-            return smallObjectSerializationMs.equals(result.smallObjectSerializationMs)
-                    && bigObjectSerializationMs.equals(result.bigObjectSerializationMs);
+            return smallObjectSerialization.equals(result.smallObjectSerialization)
+                    && bigObjectSerialization.equals(result.bigObjectSerialization);
         }
 
         @Override
         public int hashCode() {
-            int result = smallObjectSerializationMs.hashCode();
-            result = 31 * result + bigObjectSerializationMs.hashCode();
+            int result = smallObjectSerialization.hashCode();
+            result = 31 * result + bigObjectSerialization.hashCode();
             return result;
         }
 

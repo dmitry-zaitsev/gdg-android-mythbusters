@@ -1,6 +1,7 @@
 package com.example.mythbusters.core.benchmark.serialization;
 
 import com.example.mythbusters.core.benchmark.Benchmark;
+import com.example.mythbusters.core.benchmark.MockBenchmark;
 import com.example.mythbusters.domain.measurement.MeasurementResult;
 
 import org.junit.Before;
@@ -14,6 +15,7 @@ import java.util.List;
 
 import rx.observers.TestSubscriber;
 
+import static com.example.mythbusters.core.benchmark.BenchmarkUtils.buildMeasurementResult;
 import static java.util.Arrays.asList;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyObject;
@@ -54,7 +56,7 @@ public class MeasureSerializationUseCaseTest {
     @Test
     public void behavior() throws Exception {
         // Given
-        final MeasureSerializationUseCase useCase = new MeasureSerializationUseCase(
+        MeasureSerializationUseCase useCase = new MeasureSerializationUseCase(
                 benchmark,
                 serializer,
                 objectFactory
@@ -101,13 +103,13 @@ public class MeasureSerializationUseCaseTest {
     @Test
     public void output() throws Exception {
         // Given
-        final MeasureSerializationUseCase useCase = new MeasureSerializationUseCase(
+        MeasureSerializationUseCase useCase = new MeasureSerializationUseCase(
                 benchmark,
                 serializer,
                 objectFactory
         );
 
-        final TestSubscriber<MeasureSerializationUseCase.Result> subscriber = new TestSubscriber<>();
+        TestSubscriber<MeasureSerializationUseCase.Result> subscriber = new TestSubscriber<>();
 
         MeasureSerializationUseCase.Result expected = buildExpectedResult();
 
@@ -130,13 +132,6 @@ public class MeasureSerializationUseCaseTest {
         return new MeasureSerializationUseCase.Result(
                 results,
                 results
-        );
-    }
-
-    private MeasurementResult buildMeasurementResult(int iterations) {
-        return new MeasurementResult(
-                iterations,
-                MockBenchmark.MEASUREMENT_MS
         );
     }
 
