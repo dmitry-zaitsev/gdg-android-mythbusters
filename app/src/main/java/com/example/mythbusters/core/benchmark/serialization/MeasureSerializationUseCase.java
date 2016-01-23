@@ -78,12 +78,10 @@ public class MeasureSerializationUseCase {
     }
 
     private MeasurementResult runBenchmark(Object object, int iterations) {
-        final long time = benchmark.measureOperation(
+        return benchmark.measureOperation(
                 () -> serializer.serialize(object),
                 iterations
         );
-
-        return new MeasurementResult(iterations, time);
     }
 
     /**

@@ -63,12 +63,10 @@ public class MeasureJniInvocationUseCase {
     }
 
     private MeasurementResult runBenchmarkForJvm(int iterations) {
-        final long time = benchmark.measureOperation(
+        return benchmark.measureOperation(
                 invocation::runOnJvm,
                 iterations
         );
-
-        return new MeasurementResult(iterations, time);
     }
 
     private List<MeasurementResult> measureJniInvocations() {
@@ -84,12 +82,10 @@ public class MeasureJniInvocationUseCase {
     }
 
     private MeasurementResult runBenchmarkForJni(int iterations) {
-        final long time = benchmark.measureOperation(
+        return benchmark.measureOperation(
                 invocation::runOnJni,
                 iterations
         );
-
-        return new MeasurementResult(iterations, time);
     }
 
     /**

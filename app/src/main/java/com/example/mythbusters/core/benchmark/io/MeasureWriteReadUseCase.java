@@ -69,12 +69,10 @@ public class MeasureWriteReadUseCase {
     }
 
     private MeasurementResult runBenchmarkForWriting(String value, int iterations) {
-        final long time = benchmark.measureOperation(
+        return benchmark.measureOperation(
                 new WriteOperation(value),
                 iterations
         );
-
-        return new MeasurementResult(iterations, time);
     }
 
     private List<MeasurementResult> measureReading() {
@@ -90,12 +88,10 @@ public class MeasureWriteReadUseCase {
     }
 
     private MeasurementResult runBenchmarkForReading(int iterations) {
-        final long time = benchmark.measureOperation(
+        return benchmark.measureOperation(
                 new ReadOperation(),
                 iterations
         );
-
-        return new MeasurementResult(iterations, time);
     }
 
     /**
