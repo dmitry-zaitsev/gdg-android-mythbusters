@@ -120,7 +120,7 @@ public class SerializationBenchmarkPresenterTest {
 
     private BenchmarkResultViewModel buildBenchmarkViewModel() {
         return new BenchmarkResultViewModel(
-                3 * MockBenchmark.MEASUREMENT_MS / 111
+                (long) ((3 * MockBenchmark.MEASUREMENT_MS / 111.0) * 1e3)
         );
     }
 

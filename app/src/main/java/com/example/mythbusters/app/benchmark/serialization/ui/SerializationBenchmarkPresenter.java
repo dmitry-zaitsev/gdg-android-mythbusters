@@ -3,6 +3,7 @@ package com.example.mythbusters.app.benchmark.serialization.ui;
 import com.example.mythbusters.app.platform.PlatformTransformer;
 import com.example.mythbusters.app.ui.AbstractPresenter;
 import com.example.mythbusters.core.benchmark.serialization.MeasureSerializationUseCase;
+import com.example.mythbusters.domain.measurement.MeasurementMath;
 import com.example.mythbusters.domain.measurement.MeasurementResult;
 
 import java.util.List;
@@ -10,8 +11,6 @@ import java.util.List;
 import rx.Observable;
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
-
-import static rx.Observable.from;
 
 /**
  * Presenter for the screen with results of serialization benchmark
@@ -110,26 +109,9 @@ public class SerializationBenchmarkPresenter extends AbstractPresenter {
     }
 
     private BenchmarkResultViewModel toViewModel(List<MeasurementResult> measurementResults) {
-        final Observable<Long> iterationsSum = from(measurementResults)
-                .reduce(
-                        0L,
-                        (sum, measurementResult) -> sum + measurementResult.iterations
-                );
-
-        return from(measurementResults)
-                .reduce(
-                        0L,
-                        (sum, measurementResult) -> sum + measurementResult.timeMs
-                )
-                .withLatestFrom(
-                        iterationsSum,
-                        (totalTime, totalIterations) -> totalTime / totalIterations
-                )
-                .map(
-                        BenchmarkResultViewModel::new
-                )
-                .toBlocking()
-                .first();
+        return new BenchmarkResultViewModel(
+                MeasurementMath.averageTimePerIteration(measurementResults)
+        );
     }
 
     @Override

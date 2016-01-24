@@ -3,11 +3,9 @@ package com.example.mythbusters.app.benchmark.preferences.ui;
 import com.example.mythbusters.app.platform.PlatformTransformer;
 import com.example.mythbusters.app.ui.AbstractPresenter;
 import com.example.mythbusters.core.benchmark.io.MeasureWriteReadUseCase;
+import com.example.mythbusters.domain.measurement.MeasurementMath;
 
-import rx.Observable;
 import rx.subscriptions.CompositeSubscription;
-
-import static rx.Observable.from;
 
 /**
  * Presenter for {@link android.content.SharedPreferences} benchmark results
@@ -54,53 +52,13 @@ public class PreferencesBenchmarkPresenter extends AbstractPresenter {
     }
 
     private BenchmarkResultViewModel toViewModel(MeasureWriteReadUseCase.Result result) {
-        final long timePerWrite = computeTimePerWrite(result);
-        final long timePerRead = computeTimePerRead(result);
+        final long timePerWrite = MeasurementMath.averageTimePerIteration(result.writes);
+        final long timePerRead = MeasurementMath.averageTimePerIteration(result.reads);
 
         return new BenchmarkResultViewModel(
                 timePerRead,
                 timePerWrite
         );
-    }
-
-    private long computeTimePerWrite(MeasureWriteReadUseCase.Result result) {
-        final Observable<Long> iterations = from(result.writes)
-                .reduce(
-                        0L,
-                        (sum, measurementResult) -> sum + measurementResult.iterations
-                );
-
-        return from(result.writes)
-                .reduce(
-                        0L,
-                        (sum, measurementResult) -> sum + measurementResult.timeMs
-                )
-                .withLatestFrom(
-                        iterations,
-                        (totalTime, totalIterations) -> totalTime / totalIterations
-                )
-                .toBlocking()
-                .first();
-    }
-
-    private long computeTimePerRead(MeasureWriteReadUseCase.Result result) {
-        final Observable<Long> iterations = from(result.reads)
-                .reduce(
-                        0L,
-                        (sum, measurementResult) -> sum + measurementResult.iterations
-                );
-
-        return from(result.reads)
-                .reduce(
-                        0L,
-                        (sum, measurementResult) -> sum + measurementResult.timeMs
-                )
-                .withLatestFrom(
-                        iterations,
-                        (totalTime, totalIterations) -> totalTime / totalIterations
-                )
-                .toBlocking()
-                .first();
     }
 
     @Override
