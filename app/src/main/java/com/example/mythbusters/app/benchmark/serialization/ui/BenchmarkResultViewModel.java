@@ -1,4 +1,4 @@
-package com.example.mythbusters.app.benchmark.serialization;
+package com.example.mythbusters.app.benchmark.serialization.ui;
 
 /**
  * Result of benchmark

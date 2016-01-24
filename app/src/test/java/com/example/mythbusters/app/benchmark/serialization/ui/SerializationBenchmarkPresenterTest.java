@@ -1,6 +1,5 @@
 package com.example.mythbusters.app.benchmark.serialization.ui;
 
-import com.example.mythbusters.app.benchmark.serialization.BenchmarkResultViewModel;
 import com.example.mythbusters.app.platform.TestPlatform;
 import com.example.mythbusters.core.benchmark.MockBenchmark;
 import com.example.mythbusters.core.benchmark.serialization.MeasureSerializationUseCase;
