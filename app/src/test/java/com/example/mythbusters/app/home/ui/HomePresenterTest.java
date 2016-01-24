@@ -1,4 +1,4 @@
-package com.example.mythbusters.app.home;
+package com.example.mythbusters.app.home.ui;
 
 import com.example.mythbusters.app.navigation.Navigator;
 import com.example.mythbusters.app.navigation.Transitions;

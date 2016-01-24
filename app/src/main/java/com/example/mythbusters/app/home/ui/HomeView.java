@@ -1,4 +1,4 @@
-package com.example.mythbusters.app.home;
+package com.example.mythbusters.app.home.ui;
 
 /**
  * Home screen of the application
