@@ -1,7 +1,7 @@
 package com.example.mythbusters.app.benchmark.serialization.ui;
 
-import com.example.mythbusters.app.AbstractPresenter;
 import com.example.mythbusters.app.platform.PlatformTransformer;
+import com.example.mythbusters.app.ui.AbstractPresenter;
 import com.example.mythbusters.core.benchmark.serialization.MeasureSerializationUseCase;
 import com.example.mythbusters.domain.measurement.MeasurementResult;
 

@@ -1,4 +1,4 @@
-package com.example.mythbusters.app;
+package com.example.mythbusters.app.ui;
 
 import java.io.Serializable;
 

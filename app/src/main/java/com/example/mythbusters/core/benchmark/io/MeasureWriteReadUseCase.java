@@ -121,7 +121,7 @@ public class MeasureWriteReadUseCase {
          */
         public final List<MeasurementResult> reads;
 
-        Result(List<MeasurementResult> writes, List<MeasurementResult> reads) {
+        public Result(List<MeasurementResult> writes, List<MeasurementResult> reads) {
             this.writes = writes;
             this.reads = reads;
         }

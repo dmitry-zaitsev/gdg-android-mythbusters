@@ -1,6 +1,6 @@
 package com.example.mythbusters.app.benchmark.serialization.ui;
 
-import com.example.mythbusters.app.ProgressView;
+import com.example.mythbusters.app.ui.ProgressView;
 
 /**
  * Shows results of serialization benchmark

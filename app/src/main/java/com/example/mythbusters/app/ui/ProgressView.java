@@ -1,4 +1,4 @@
-package com.example.mythbusters.app;
+package com.example.mythbusters.app.ui;
 
 /**
  * View which is capable of displaying the running progress.

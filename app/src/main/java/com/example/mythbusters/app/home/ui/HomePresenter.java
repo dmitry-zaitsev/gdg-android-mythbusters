@@ -1,8 +1,8 @@
 package com.example.mythbusters.app.home.ui;
 
-import com.example.mythbusters.app.AbstractPresenter;
 import com.example.mythbusters.app.navigation.Navigator;
 import com.example.mythbusters.app.navigation.Transitions;
+import com.example.mythbusters.app.ui.AbstractPresenter;
 
 /**
  * Presenter for the home screen of the application
