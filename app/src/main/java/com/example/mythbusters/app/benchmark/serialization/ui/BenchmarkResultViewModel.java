@@ -6,12 +6,12 @@ package com.example.mythbusters.app.benchmark.serialization.ui;
 public class BenchmarkResultViewModel {
 
     /**
-     * Milliseconds spent on a single operation
+     * Nanoseconds spent on a single operation
      */
-    public final long millisecondsPerOperation;
+    public final long nanosecondsPerOperation;
 
-    public BenchmarkResultViewModel(long millisecondsPerOperation) {
-        this.millisecondsPerOperation = millisecondsPerOperation;
+    public BenchmarkResultViewModel(long nanosecondsPerOperation) {
+        this.nanosecondsPerOperation = nanosecondsPerOperation;
     }
 
     @Override
@@ -21,18 +21,18 @@ public class BenchmarkResultViewModel {
 
         BenchmarkResultViewModel that = (BenchmarkResultViewModel) o;
 
-        return millisecondsPerOperation == that.millisecondsPerOperation;
+        return nanosecondsPerOperation == that.nanosecondsPerOperation;
     }
 
     @Override
     public int hashCode() {
-        return (int) (millisecondsPerOperation ^ (millisecondsPerOperation >>> 32));
+        return (int) (nanosecondsPerOperation ^ (nanosecondsPerOperation >>> 32));
     }
 
     @Override
     public String toString() {
         return "BenchmarkResultViewModel{" +
-                "millisecondsPerOperation=" + millisecondsPerOperation +
+                "nanosecondsPerOperation=" + nanosecondsPerOperation +
                 '}';
     }
 

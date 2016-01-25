@@ -120,7 +120,7 @@ public class MeasureJniInvocationUseCase {
          */
         public final List<MeasurementResult> jvmInvocations;
 
-        Result(List<MeasurementResult> jniInvocations,
+        public Result(List<MeasurementResult> jniInvocations,
                List<MeasurementResult> jvmInvocations) {
             this.jniInvocations = jniInvocations;
             this.jvmInvocations = jvmInvocations;

@@ -8,23 +8,16 @@ public class Invocation implements MeasureJniInvocationUseCase.Invocation {
         System.loadLibrary("invocation");
     }
 
+    private final ValueHolder holder = new ValueHolder();
+
     @Override
     public void runOnJvm() {
-        final ValueHolder holder = new ValueHolder();
-        for (int i = 0; i < 100; i++) {
-            for (int j = 0; j < 100; j++) {
-                holder.setValue(i, j);
-            }
-        }
+        holder.setValue(5, 10);
     }
 
     @Override
     public void runOnJni() {
-        for (int i = 0; i < 100; i++) {
-            for (int j = 0; j < 100; j++) {
-                setValue(i, j);
-            }
-        }
+        setValue(5, 10);
     }
 
     native void setValue(int x, int y);
