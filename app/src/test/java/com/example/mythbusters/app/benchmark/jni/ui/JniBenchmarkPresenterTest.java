@@ -99,8 +99,8 @@ public class JniBenchmarkPresenterTest {
 
     private BenchmarkResultViewModel buildBenchmarkViewModel() {
         return new BenchmarkResultViewModel(
-                (long) ((3 * MockBenchmark.MEASUREMENT_MS / 111.0) * 1e3),
-                (long) ((3 * MockBenchmark.MEASUREMENT_MS / 111.0) * 1e3)
+                (long) (3 * MockBenchmark.MEASUREMENT_MS / 111.0),
+                (long) (3 * MockBenchmark.MEASUREMENT_MS / 111.0)
         );
     }
 

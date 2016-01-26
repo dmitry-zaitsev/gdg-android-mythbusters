@@ -3,17 +3,24 @@
     package="com.example.mythbusters" >
 
     <application
+        android:name=".app.android.Application"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
-        <activity android:name=".MainActivity" >
+        <activity android:name=".app.home.ui.android.HomeActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".app.benchmark.serialization.ui.android.SerializationActivity" >
+        </activity>
+        <activity android:name=".app.benchmark.preferences.ui.android.PreferencesBenchmarkActivity" >
+        </activity>
+        <activity android:name=".app.benchmark.jni.ui.android.JniBenchmarkActivity" >
         </activity>
     </application>
 

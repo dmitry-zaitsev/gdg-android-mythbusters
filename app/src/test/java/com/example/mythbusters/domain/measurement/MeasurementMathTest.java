@@ -14,7 +14,7 @@ public class MeasurementMathTest {
         // Given
         MeasurementResult input = new MeasurementResult(3, 10);
 
-        long expected = (long) ((10 / 3.0) * 1e3);
+        long expected = (long) (10 / 3.0);
 
         // When
         long result = MeasurementMath.averageTimePerIteration(input);
@@ -24,7 +24,7 @@ public class MeasurementMathTest {
     }
 
     @Test
-    public void averageTimePerIteration1() throws Exception {
+    public void averageTimePerIterationOnList() throws Exception {
         // Given
         List<MeasurementResult> results = asList(
                 new MeasurementResult(3, 10),
@@ -32,7 +32,7 @@ public class MeasurementMathTest {
                 new MeasurementResult(8, 30)
         );
 
-        long expected = (long) ((10 + 20 + 30) / (3.0 + 5.0 + 8.0) * 1e3);
+        long expected = (long) ((10 + 20 + 30) / (3.0 + 5.0 + 8.0));
 
         // When
         long result = MeasurementMath.averageTimePerIteration(results);

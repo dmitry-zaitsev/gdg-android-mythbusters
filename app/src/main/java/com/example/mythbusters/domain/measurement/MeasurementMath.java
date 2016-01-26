@@ -42,7 +42,7 @@ public class MeasurementMath {
     }
 
     private static long averageInNanoseconds(long totalTime, long totalIterations) {
-        return (long) ((totalTime / (double) totalIterations) * 1e3);
+        return (long) (totalTime / (double) totalIterations);
     }
 
 }
