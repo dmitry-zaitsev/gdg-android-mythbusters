@@ -14,19 +14,21 @@ import com.example.mythbusters.core.benchmark.jni.MeasureJniInvocationUseCase;
 import com.example.mythbusters.core.benchmark.serialization.MeasureSerializationUseCase;
 import com.example.mythbusters.domain.measurement.TimerBenchmark;
 
+import static com.example.mythbusters.domain.measurement.WarmupBenchmark.warmUp;
+
 /**
  * Provides dependencies of the application
  */
 public class Dependencies {
 
     private static final MeasureSerializationUseCase measureAndroidSerializationUseCase = new MeasureSerializationUseCase(
-            benchmark(),
+            warmUp(benchmark()),
             new AndroidParcelableSerializer(),
             new ObjectFactory()
     );
 
     private static final MeasureSerializationUseCase measureJavaSerializationUseCase = new MeasureSerializationUseCase(
-            benchmark(),
+            warmUp(benchmark()),
             new JavaSerializer(),
             new ObjectFactory()
     );
@@ -34,7 +36,7 @@ public class Dependencies {
     private static MeasureWriteReadUseCase measureSharedPreferencesUseCase;
 
     private static final MeasureJniInvocationUseCase measureJniInvocationUseCase = new MeasureJniInvocationUseCase(
-            benchmark(),
+            warmUp(benchmark(), 100000),
             new Invocation()
     );
 

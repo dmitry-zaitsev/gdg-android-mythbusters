@@ -14,7 +14,7 @@ public class AndroidPlatform implements PlatformTransformer {
     @Override
     public <T> Observable.Transformer<T, T> newTransformer() {
         return observable -> observable
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
