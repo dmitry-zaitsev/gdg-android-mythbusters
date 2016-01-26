@@ -2,17 +2,19 @@ package com.example.mythbusters.app.benchmark.preferences.ui.android;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.TextView;
 
 import com.example.mythbusters.R;
-import com.example.mythbusters.app.android.Dependencies;
 import com.example.mythbusters.app.benchmark.preferences.ui.BenchmarkResultViewModel;
 import com.example.mythbusters.app.benchmark.preferences.ui.PreferencesBenchmarkPresenter;
 import com.example.mythbusters.app.benchmark.preferences.ui.PreferencesBenchmarkView;
 import com.example.mythbusters.app.platform.android.AndroidPlatform;
+import com.example.mythbusters.app.ui.android.ChartRenderer;
+import com.github.mikephil.charting.charts.BarChart;
+
+import java.text.NumberFormat;
 
 import static com.example.mythbusters.app.android.Dependencies.measureSharedPreferencesUseCase;
 
@@ -52,24 +54,28 @@ public class PreferencesBenchmarkActivity extends AppCompatActivity {
 
     private class BenchmarkView implements PreferencesBenchmarkView {
 
-        TextView writeResult;
-        TextView readResult;
-        View progressView;
+        final View progressView;
+        final ChartRenderer chartRenderer;
 
         BenchmarkView() {
-            writeResult = (TextView) findViewById(R.id.write_result);
-            readResult = (TextView) findViewById(R.id.read_result);
             progressView = findViewById(R.id.progressBar);
+
+            final NumberFormat numberFormat = NumberFormat.getNumberInstance();
+            numberFormat.setMaximumFractionDigits(3);
+
+            chartRenderer = new ChartRenderer(
+                    (BarChart) findViewById(R.id.chart),
+                    value -> numberFormat.format((value * 1e-6)) + " ms",
+                    "Write",
+                    "Read"
+            );
         }
 
         @Override
         public void setResult(BenchmarkResultViewModel result) {
-            writeResult.setText(
-                    result.nanosecondsPerWrite * 1e-6 + " ms"
-            );
-
-            readResult.setText(
-                    result.nanosecondsPerRead * 1e-6 + " ms"
+            chartRenderer.renderValues(
+                    result.nanosecondsPerWrite,
+                    result.nanosecondsPerRead
             );
         }
 

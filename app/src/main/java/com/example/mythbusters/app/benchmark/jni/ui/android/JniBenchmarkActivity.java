@@ -2,17 +2,17 @@ package com.example.mythbusters.app.benchmark.jni.ui.android;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.TextView;
 
 import com.example.mythbusters.R;
-import com.example.mythbusters.app.android.Dependencies;
 import com.example.mythbusters.app.benchmark.jni.ui.BenchmarkResultViewModel;
 import com.example.mythbusters.app.benchmark.jni.ui.JniBenchmarkPresenter;
 import com.example.mythbusters.app.benchmark.jni.ui.JniBenchmarkView;
 import com.example.mythbusters.app.platform.android.AndroidPlatform;
+import com.example.mythbusters.app.ui.android.ChartRenderer;
+import com.github.mikephil.charting.charts.BarChart;
 
 import static com.example.mythbusters.app.android.Dependencies.measureJniInvocationUseCase;
 
@@ -52,24 +52,25 @@ public class JniBenchmarkActivity extends AppCompatActivity {
 
     private class BenchmarkView implements JniBenchmarkView {
 
-        TextView jniResult;
-        TextView jvmResult;
-        View progressView;
+        final View progressView;
+        final ChartRenderer chartRenderer;
 
         BenchmarkView() {
-            jniResult = (TextView) findViewById(R.id.jni_result);
-            jvmResult = (TextView) findViewById(R.id.jvm_result);
             progressView = findViewById(R.id.progressBar);
+
+            chartRenderer = new ChartRenderer(
+                    (BarChart) findViewById(R.id.chart),
+                    value -> (int) value + " ns",
+                    "Java",
+                    "JNI"
+            );
         }
 
         @Override
         public void setResult(BenchmarkResultViewModel result) {
-            jniResult.setText(
-                    result.nanosecondsPerJniCall + " ns"
-            );
-
-            jvmResult.setText(
-                    result.nanosecondsPerJvmCall + " ns"
+            chartRenderer.renderValues(
+                    result.nanosecondsPerJvmCall,
+                    result.nanosecondsPerJniCall
             );
         }
 

@@ -5,13 +5,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.TextView;
 
 import com.example.mythbusters.R;
 import com.example.mythbusters.app.benchmark.serialization.ui.BenchmarkResultViewModel;
 import com.example.mythbusters.app.benchmark.serialization.ui.SerializationBenchmarkPresenter;
 import com.example.mythbusters.app.benchmark.serialization.ui.SerializationBenchmarkView;
 import com.example.mythbusters.app.platform.android.AndroidPlatform;
+import com.example.mythbusters.app.ui.android.ChartRenderer;
+import com.github.mikephil.charting.charts.BarChart;
+
+import java.text.NumberFormat;
 
 import static com.example.mythbusters.app.android.Dependencies.measureAndroidSerializationUseCase;
 import static com.example.mythbusters.app.android.Dependencies.measureJavaSerializationUseCase;
@@ -53,28 +56,42 @@ public class SerializationActivity extends AppCompatActivity {
 
     private class BenchmarkView implements SerializationBenchmarkView {
 
-        TextView serializationResult;
-        TextView androidSerializationResult;
-        View progressView;
+        final View progressView;
+        final ChartRenderer chartRenderer;
+
+        long serializableResult;
+        long parcelableResult;
 
         BenchmarkView() {
-            serializationResult = (TextView) findViewById(R.id.serializable_result);
-            androidSerializationResult = (TextView) findViewById(R.id.parcelable_result);
             progressView = findViewById(R.id.progressBar);
+
+            final NumberFormat numberFormat = NumberFormat.getNumberInstance();
+            numberFormat.setMaximumFractionDigits(3);
+
+            chartRenderer = new ChartRenderer(
+                    (BarChart) findViewById(R.id.chart),
+                    value -> numberFormat.format(value * 1e-6) + " ms",
+                    "Serializable",
+                    "Parcelable"
+            );
         }
 
         @Override
         public void setSerializationResult(BenchmarkResultViewModel result) {
-            serializationResult.setText(
-                    result.nanosecondsPerOperation * 1e-6 + " ms"
-            );
+            serializableResult = result.nanosecondsPerOperation;
+
+            refreshValues();
         }
 
         @Override
         public void setParcelableSerializationResult(BenchmarkResultViewModel result) {
-            androidSerializationResult.setText(
-                    result.nanosecondsPerOperation * 1e-6 + " ms"
-            );
+            parcelableResult = result.nanosecondsPerOperation;
+
+            refreshValues();
+        }
+
+        private void refreshValues() {
+            chartRenderer.renderValues(serializableResult, parcelableResult);
         }
 
         @Override
